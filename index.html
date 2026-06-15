@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HOLA 家具 SKU 圖片極速查詢器</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            background-color: #0d1117;
+            color: #c9d1d9;
+            margin: 0;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            color: #f0f6fc;
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        .subtitle {
+            color: #8b949e;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+        .search-container {
+            width: 100%;
+            max-width: 500px;
+            margin-bottom: 40px;
+        }
+        input {
+            width: 100%;
+            padding: 12px 16px;
+            font-size: 16px;
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            color: #f0f6fc;
+            box-sizing: border-box;
+            outline: none;
+        }
+        input:focus {
+            border-color: #58a6ff;
+            box-shadow: 0 0 0 3px rgba(56, 139, 253, 0.3);
+        }
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 1000px;
+        }
+        .card {
+            background-color: #161b22;
+            border: 1px solid #30363d;
+            border-radius: 6px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .sku-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #58a6ff;
+            margin-bottom: 10px;
+            word-break: break-all;
+        }
+        .img-container {
+            width: 100%;
+            height: 200px;
+            border-radius: 4px;
+            overflow: hidden;
+            background-color: #0d1117;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        .no-result {
+            color: #8b949e;
+            grid-column: 1 / -1;
+            text-align: center;
+            font-size: 14px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>HOLA 家具 SKU 圖片極速查詢器</h1>
+    <div class="subtitle">輸入主貨號（例如 014081897），直接秒吐所有相關圖片</div>
+
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="請輸入公司 SKU 貨號..." oninput="doSearch()">
+    </div>
+
+    <div class="gallery" id="galleryResult">
+        <div class="no-result">請輸入貨號啟動查詢，沒輸入前什麼都不會顯示。</div>
+    </div>
+
+    <script>
+        // ➔ 這裡把你剛剛在 Excel 組裝好的一千多行文字全部貼進來！
+        const skuDatabase = [
+// 這裡就是你等等要塞 1000 多行燃料的地方！
+        ];
+
+        // 把 Google Drive 的網頁檢視網址，強制硬轉成可以直接在網頁顯圖的預覽直連
+        function convertDriveUrl(url) {
+            if (url.includes('drive.google.com')) {
+                var parts = url.split('/d/');
+                if (parts.length > 1) {
+                    var fileId = parts[1].split('/')[0];
+                    return 'https://drive.google.com/thumbnail?id=' + fileId + '&sz=w600';
+                }
+            }
+            return url;
+        }
+
+        function doSearch() {
+            const keyword = document.getElementById('searchInput').value.trim();
+            const gallery = document.getElementById('galleryResult');
+            gallery.innerHTML = '';
+
+            if (keyword === '') {
+                gallery.innerHTML = '<div class="no-result">請輸入貨號啟動查詢，沒輸入前什麼都不會顯示。</div>';
+                return;
+            }
+
+            // 模糊篩選：只要檔名包含你輸入的九碼 SKU，就全部撈出來
+            const filtered = skuDatabase.filter(item => item[0].includes(keyword));
+
+            if (filtered.length === 0) {
+                gallery.innerHTML = '<div class="no-result">晦氣！找不到任何符合的 SKU 圖片，請檢查編號是否正確。</div>';
+                return;
+            }
+
+            filtered.forEach(item => {
+                const skuName = item[0];
+                const rawUrl = item[1];
+                const displayUrl = convertDriveUrl(rawUrl);
+
+                const card = document.createElement('div');
+                card.className = 'card';
+                card.innerHTML = `
+                    <div class="sku-title">${skuName}</div>
+                    <div class="img-container">
+                        <img src="${displayUrl}" alt="${skuName}" onerror="this.src='https://placehold.co/300x200/222/888?text=Loading+Error'">
+                    </div>
+                `;
+                gallery.innerHTML += card.outerHTML;
+            });
+        }
+    </script>
+</body>
+</html>
