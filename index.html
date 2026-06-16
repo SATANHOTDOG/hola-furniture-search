@@ -106,9 +106,8 @@
     </div>
 
     <script>
-        // ➔ 這裡把你剛剛在 Excel 組裝好的一千多行文字全部貼進來！
-        const skuDatabase = [
-["014416314-3","https://drive.google.com/file/d/1Pt2LddiT8UCsWcnMZBd3_kGqNGAyB9Fa/view?usp=drivesdk"],
+        // ➔ 這裡把你剛剛在 Excel 用雙引號公式組裝好的一千多行文字全部貼進來！
+        const skuDatabase = [["014416314-3","https://drive.google.com/file/d/1Pt2LddiT8UCsWcnMZBd3_kGqNGAyB9Fa/view?usp=drivesdk"],
 ["014372855-1","https://drive.google.com/file/d/1hkkfhoejdlsPWPzd6SiYz3P91v9AyG_p/view?usp=drivesdk"],
 ["014399080-3","https://drive.google.com/file/d/1hJen_1a6S0KtB4-dryAV0-HIeZ_Y-4Yo/view?usp=drivesdk"],
 ["014399080-5","https://drive.google.com/file/d/1eCGFU3ARImpADC5waJFEjUD9ySSPE0y-/view?usp=drivesdk"],
@@ -1515,12 +1514,19 @@
             const gallery = document.getElementById('galleryResult');
             gallery.innerHTML = '';
 
+            // 【第一道煞車】如果沒輸入，顯示提示
             if (keyword === '') {
                 gallery.innerHTML = '<div class="no-result">請輸入貨號啟動查詢，沒輸入前什麼都不會顯示。</div>';
                 return;
             }
 
-            // 模糊篩選：只要檔名包含你輸入的九碼 SKU，就全部撈出來
+            // 【第二道煞車：關鍵核心】如果輸入不滿 9 位數，直接攔截，什麼都不做！防止網頁載入過多圖片當機
+            if (keyword.length < 9) {
+                gallery.innerHTML = '<div class="no-result" style="color: #e68a00;">請輸入完整 9 位數主貨號進行精準搜尋，避免系統當機...</div>';
+                return;
+            }
+
+            // 模糊篩選：此時安全了，只有符合 9 碼以上的才會被撈出來
             const filtered = skuDatabase.filter(item => item[0].includes(keyword));
 
             if (filtered.length === 0) {
