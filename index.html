@@ -1627,5 +1627,19 @@
             });
         }
     </script>
+    <script>
+window.addEventListener('DOMContentLoaded', (event) => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const targetSku = urlParams.get('q');
+    if (targetSku) {
+        // 確認舊網站的搜尋框 ID 叫做 searchInput
+        let searchBox = document.getElementById('searchInput'); 
+        if(searchBox) {
+            searchBox.value = targetSku;
+            searchBox.dispatchEvent(new Event('input')); // 強制觸發盲搜
+        }
+    }
+});
+</script>
 </body>
 </html>
