@@ -107,7 +107,8 @@
 
     <script>
         // ➔ 這裡把你剛剛在 Excel 用雙引號公式組裝好的一千多行文字全部貼進來！
-        const skuDatabase = ["014422779-2","https://drive.google.com/file/d/1Gw32ijGG4FiXDUFSi4Aop66dyY4ksBC1/view?usp=drivesdk"],
+       const skuDatabase = [
+["014422779-2","https://drive.google.com/file/d/1Gw32ijGG4FiXDUFSi4Aop66dyY4ksBC1/view?usp=drivesdk"],
 ["014422779-1","https://drive.google.com/file/d/1e61eqx962ElQ4Z0ID8CFOhuVtFcnAUEt/view?usp=drivesdk"],
 ["014423292-2","https://drive.google.com/file/d/12fNZpFTON4wzDGswHbMyeuVFpYLy2uDG/view?usp=drivesdk"],
 ["014423292-1","https://drive.google.com/file/d/19imasA7SL6JIcGZlTW8cX3u3E04w4d2I/view?usp=drivesdk"],
@@ -1616,8 +1617,8 @@
 ["014081884-1","https://drive.google.com/file/d/1bWLeGy7YPLMSHtF8hxASsc7EWMSehI5L/view?usp=drivesdk"],
 ["014081897-1","https://drive.google.com/file/d/1clttAnQjyQ-E8L9R3Wz5rE8xiuGIrjPC/view?usp=drivesdk"],
 ["009452268-1","https://drive.google.com/file/d/1jMtHw4dJicNN_MO4yZ2eYjGA3vDRpNLq/view?usp=drivesdk"],
-["014081897-2","https://drive.google.com/file/d/1zhLpwUodbVAJGE0CD-p05Uun-ykDSvNN/view?usp=drivesdk"],];
-
+["014081897-2","https://drive.google.com/file/d/1zhLpwUodbVAJGE0CD-p05Uun-ykDSvNN/view?usp=drivesdk"]
+];
         // 把 Google Drive 的網頁檢視網址，強制硬轉成可以直接在網頁顯圖的預覽直連
         function convertDriveUrl(url) {
             if (url.includes('drive.google.com')) {
